@@ -40,8 +40,7 @@ $(function() {
 		},
 		toMain: function() {
 			window.addEventListener('popstate', function(e) {
-				
-				if(typeof e.state.path == 'string') {
+				if(e.state && typeof e.state.path == 'string') {
 					app.getData(e.state.path.match(/\d/));
 					app.renderTemplate();
 				} else {
