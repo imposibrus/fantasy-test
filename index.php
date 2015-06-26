@@ -40,7 +40,7 @@
 			
 		<div class="news-item">
 			<a href="/news/<?= $value['id'] ?>" data-id="<?= $value['id'] ?>">
-				<span><?= $value['title'] ?></span>
+				<span><?= $value['title'] ?> - <?= $value['id'] ?></span>
 				<img src="<?= $value['image'] ?>" alt="">
 			</a>
 			<p><?= substr($value['text'], 0, 30) ?>...</p>
@@ -49,12 +49,16 @@
 
 	<?php } ?>
 </div>
-<div class="news-full"></div>
+<div class="news-full">
+	<div class="news-full-content">
+		
+	</div>
+</div>
 
 <script id="news-view-template" type="text/x-handlebars-template">
-  
-			<h1>{{title}}</h1>
-			<img src="{{image}}" alt="">
+  		
+		<h1>{{title}} - {{id}}</h1>
+		<img src="{{image}}" alt="">
 		<p>{{text}}</p>
 </script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

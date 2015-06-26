@@ -12,34 +12,41 @@ $(function() {
 			}
 		},
 		handler: function() {
-			$('.news-item a').click(function() {
-				var itemId = $(this).data('id') - 1;
+			$('.news-item a').click(function(e) {
+				e.preventDefault();
+				var href = $(this).attr("href");
+				var itemId = $(this).data('id');
 				app.getData(itemId);
-				return false;
+				app.urlChange(href);
 			});
 		},
 		getData: function(itemId) {
-			$.getJSON('/ajax/ajax.php?id=' + itemId, function(data) {
-				app.urlChange(itemId);
+			var query = $.getJSON('/ajax/ajax.php?id=' + itemId, function(data) {
 				app.renderTemplate(data);
+			}, function() {
+				alert('Не удалось найти новость')
 			});
 		},
-		urlChange: function(id) {
-
-			history.pushState({param: 'Value'}, '', '/news/' + id);
+		urlChange: function(el) {
+			history.pushState({path: el}, '', el);
+			console.log(history.state);
 		},
 		renderTemplate: function(data) {
 			var source   = $("#news-view-template").html();
 			var template = Handlebars.compile(source);
 			$('.news-list').hide();
-			$('.news-full').html(template(data));
+			$('.news-full').show();
+			$('.news-full-content').html(template(data));
 		},
 		toMain: function() {
 			window.addEventListener('popstate', function(e) {
-				console.log(history.state);
-				if(history.state == null) {
+				
+				if(typeof e.state.path == 'string') {
+					app.getData(e.state.path.match(/\d/));
+					app.renderTemplate();
+				} else {
+					$('.news-full').hide();
 					$('.news-list').show();
-					$('.news-full').html('');
 				}
 			});
 
